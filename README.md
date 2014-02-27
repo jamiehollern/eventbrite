@@ -31,11 +31,11 @@ Examples
 
   // Get the attendees of an event.
   $args = array('id' => 1234567890, 'data' => 'attendees');
-  $event = $eventbrite->events($args);
+  $attendees = $eventbrite->events($args);
 
   // Get orders for events associated with a specific user.
   $args = array('id' => 1234567, 'data' => 'owned_event_orders');
-  $event = $eventbrite->users($args);
+  $orders = $eventbrite->users($args);
 
 ?>
 
