@@ -18,6 +18,7 @@ Examples
 
 <?php
 
+  ```php
   // Load the Eventbrite API class.
   require_once('eventbrite.class.inc');
 
