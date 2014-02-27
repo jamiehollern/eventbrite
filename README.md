@@ -16,9 +16,9 @@ call this: eventbrite::events(array('id' => 1234567890, 'data' => 'attendees');
 Examples
 ========
 
+```php
 <?php
 
-  ```php
   // Load the Eventbrite API class.
   require_once('eventbrite.class.inc');
 
