@@ -27,7 +27,7 @@ Examples
 
   // Get an event by its ID.
   $args = array('id' => 1234567890);
-  $event = $eventbrite->events($args);
+  $events = $eventbrite->events($args);
 
   // Get the attendees of an event.
   $args = array('id' => 1234567890, 'data' => 'attendees');
