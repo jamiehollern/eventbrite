@@ -9,9 +9,34 @@ Eventbrite API.
 
 The methods for the API can be found at http://developer.eventbrite.com/docs/
 This class works by taking the first part of the URI after "v3" as the method 
-and the rest as parameters in an array. For example, if you were looking to 
-call https://www.eventbriteapi.com/v3/events/123456789/attendees you would
-call this: eventbrite::events(array('id' => 1234567890, 'data' => 'attendees');
+and the rest of the URI components in an array. 
+
+For example, if you were looking to call 
+
+```
+	https://www.eventbriteapi.com/v3/events/123456789/attendees
+```
+
+you would call this: 
+
+```php
+	eventbrite::events(array('id' => 1234567890, 'data' => 'attendees'));
+```
+
+You may also add an optional array called 'params', which is an array of request parameters for a given method. 
+
+For example, if you were looking to call 
+
+```
+	https://www.eventbriteapi.com/v3/users/1234567/owned_events?status=live&order_by=start_desc
+```
+
+you would call this: 
+
+```php
+	eventbrite::users(array('id' => 1234567, 'data' => 'owned_events', 'params' => array('status' => 'live', 'order_by' => 'start_desc')));
+```
+
 
 Examples
 ========
@@ -35,6 +60,10 @@ Examples
 
   // Get orders for events associated with a specific user.
   $args = array('id' => 1234567, 'data' => 'owned_event_orders');
+  $orders = $eventbrite->users($args);
+
+  // Get orders for events associated with a specific user, only showing orders after a certain timestamp
+  $args = array('id' => 1234567, 'data' => 'owned_event_orders', 'params' => array('changed_since' => '1420113600'));
   $orders = $eventbrite->users($args);
 
 ?>
