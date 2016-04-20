@@ -1,5 +1,5 @@
 {
-  "name": "eventbritephp/eventbrite",
+  "name": "JamieHollern/Eventbrite",
   "description": "A PHP library to provide interactions with the Eventbrite API.",
   "type": "library",
   "license": "GPL2",
@@ -32,12 +32,12 @@
   },
   "autoload": {
     "psr-4": {
-      "EventbritePHP\\": "src/"
+      "JamieHollern\\Eventbrite\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "EventbritePHP\\Tests\\": "tests/"
+      "JamieHollern\\Eventbrite\\Tests\\": "tests/"
     }
   }
 }
