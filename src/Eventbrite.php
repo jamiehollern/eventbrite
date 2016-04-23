@@ -40,6 +40,9 @@ class Eventbrite
      */
     private $client;
 
+    /**
+     * @var \Psr\Http\Message\ResponseInterface
+     */
     private $last_response;
 
     private $last_error;
@@ -70,7 +73,7 @@ class Eventbrite
             $config['headers']['Authorization'] = 'Bearer ' . $this->token;
             $this->client = new Client($config);
         } else {
-            throw new Exception('An OAuth token is required to connect to the Eventbrite API.');
+            throw new \Exception('An OAuth token is required to connect to the Eventbrite API.');
         }
     }
 
