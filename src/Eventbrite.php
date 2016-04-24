@@ -184,8 +184,11 @@ class Eventbrite
      */
     public function canConnect()
     {
-        $data = $this->call('GET', self::CURRENT_USER_ENDPOINT);
-        return (strpos($data['code'], '2') === 0);
+        $data = $this->get(self::CURRENT_USER_ENDPOINT);
+        if (strpos($data['code'], '2') === 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
