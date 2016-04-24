@@ -43,9 +43,9 @@ class Eventbrite
     /**
      * @var \Psr\Http\Message\ResponseInterface
      */
-    private $last_response;
+    private $last_response = null;
 
-    private $last_error;
+    private $last_error = null;
 
     /**
      * @param string $token
@@ -237,6 +237,15 @@ class Eventbrite
     public function delete($endpoint, $options = [])
     {
         return $this->call('DELETE', $endpoint, $options);
+    }
+
+    /**
+     * Returns the last response object for inspection.
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getLastResponse() {
+        return $this->last_response;
     }
 
 }
