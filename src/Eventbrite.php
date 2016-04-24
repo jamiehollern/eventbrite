@@ -203,6 +203,20 @@ class Eventbrite
     }
 
     /**
+     * Wrapper shortcut on the call method for "POST" requests.
+     *
+     * @param       $endpoint
+     * @param array $options
+     *
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     */
+    public function post($endpoint, $options = [])
+    {
+        return $this->call('POST', $endpoint, $options);
+    }
+
+    /**
      * Wrapper shortcut on the call method for "PUT" requests.
      *
      * @param       $endpoint
