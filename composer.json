@@ -28,8 +28,7 @@
     "mockery/mockery": "~0.9",
     "monolog/monolog": "~1.13",
     "satooshi/php-coveralls": "dev-master",
-    "oodle/krumo": "*",
-    "aws/aws-sdk-php": "3.0.3"
+    "oodle/krumo": "*"
   },
   "autoload": {
     "psr-4": {
