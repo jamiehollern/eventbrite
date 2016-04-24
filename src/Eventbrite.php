@@ -108,10 +108,11 @@ class Eventbrite
                 // Set the last response.
                 $this->last_response = $response;
                 // If the caller wants the raw response, give it to them.
-                if (isset($options['parse_response']) && $options['parse_response']) {
+                if (isset($options['parse_response']) && $options['parse_response'] === false) {
                     return $response;
                 }
-                return $this->parseResponse($response);
+                $parsed_response = $this->parseResponse($response);
+                return $parsed_response;
             } else {
                 // This only really happens when the network is interrupted.
                 throw new BadResponseException('A bad response was received.',
