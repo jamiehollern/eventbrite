@@ -32,12 +32,12 @@
   },
   "autoload": {
     "psr-4": {
-      "JamieHollern\\Eventbrite\\": "src/"
+      "jamiehollern\\eventbrite\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "JamieHollern\\Eventbrite\\Tests\\": "tests/"
+      "jamiehollern\\eventbrite\\Tests\\": "tests/"
     }
   }
 }
