@@ -1,5 +1,5 @@
 {
-  "name": "JamieHollern/Eventbrite",
+  "name": "jamiehollern/eventbrite",
   "description": "A PHP library to provide interactions with the Eventbrite API.",
   "type": "library",
   "license": "GPL2",

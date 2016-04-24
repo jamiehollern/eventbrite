@@ -3,20 +3,20 @@
  * @file
  * Unit tests for the Eventbrite class.
  */
-namespace JamieHollern\Eventbrite\Tests;
+namespace jamiehollern\eventbrite\Tests;
 
-use JamieHollern\Eventbrite\Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 use Mockery\Mock as m;
 
 /**
  * Class EventbriteTest
  *
- * @package JamieHollern\Eventbrite\Tests
+ * @package jamiehollern\eventbrite\Tests
  */
 class EventbriteTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \JamieHollern\Eventbrite\Eventbrite
+     * @var \jamiehollern\eventbrite\Eventbrite
      */
     public $eventbrite;
 
@@ -25,7 +25,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers JamieHollern\Eventbrite\Eventbrite::validMethod
+     * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testValidMethod() {
         $method = 'PATCH';
