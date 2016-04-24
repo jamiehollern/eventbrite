@@ -1,0 +1,44 @@
+{
+  "name": "JamieHollern/Eventbrite",
+  "description": "A PHP library to provide interactions with the Eventbrite API.",
+  "type": "library",
+  "license": "GPL2",
+  "keywords": [
+    "eventbrite",
+    "event",
+    "rest"
+  ],
+  "authors": [
+    {
+      "name": "Jamie Hollern",
+      "email": "jamiehollern@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "guzzlehttp/guzzle": "~6.0",
+    "guzzlehttp/psr7": "~1.0",
+    "guzzlehttp/promises": "~1.0",
+    "mtdowling/jmespath.php": "~2.2"
+  },
+  "require-dev": {
+    "ext-curl": "*",
+    "psr/log": "~1.0",
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "~0.9",
+    "monolog/monolog": "~1.13",
+    "satooshi/php-coveralls": "dev-master",
+    "oodle/krumo": "*",
+    "aws/aws-sdk-php": "3.0.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "JamieHollern\\Eventbrite\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "JamieHollern\\Eventbrite\\Tests\\": "tests/"
+    }
+  }
+}
