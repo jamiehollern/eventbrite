@@ -128,7 +128,7 @@ class Eventbrite
      *
      * @return bool
      */
-    private function validMethod($http_method)
+    public function validMethod($http_method)
     {
         $valid_methods = ['get', 'post', 'put', 'patch', 'delete'];
         return (in_array(strtolower($http_method), $valid_methods));

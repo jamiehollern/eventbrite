@@ -15,9 +15,22 @@ use Mockery\Mock as m;
  */
 class EventbriteTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \JamieHollern\Eventbrite\Eventbrite
+     */
+    public $eventbrite;
 
-    public function testTest() {
-        $this->assertEmpty([]);
+    public function setUp() {
+        $this->eventbrite = new Eventbrite('token');
+    }
+
+    /**
+     * @covers JamieHollern\Eventbrite\Eventbrite::validMethod
+     */
+    public function testValidMethod() {
+        $method = 'PATCH';
+        $valid = $this->eventbrite->validMethod($method);
+        $this->assertTrue($valid);
     }
 
 }
