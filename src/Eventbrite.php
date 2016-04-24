@@ -78,13 +78,13 @@ class Eventbrite
     }
 
     /**
-     * Make the call to Eventbrite, either synchronously or asynchonously.
+     * Make the call to Eventbrite, only synchronous calls at present.
      *
      * @param       $http_method
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function call($http_method, $endpoint, $options = [])
@@ -95,14 +95,15 @@ class Eventbrite
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body,
-              $pv);
-            // Send it.
-            if (isset($options['async']) && $options['async']) {
+            $request = new Request($http_method, $endpoint, $headers, $body, $pv);
+            // More work is required to properly support async.
+            /*if (isset($options['async']) && $options['async']) {
                 $response = $this->client->sendAsync($request, $options);
             } else {
                 $response = $this->client->send($request, $options);
-            }
+            }*/
+            // Send it.
+            $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
                 // Set the last response.
                 $this->last_response = $response;
