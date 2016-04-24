@@ -159,7 +159,7 @@ class Eventbrite
      *
      * @return bool
      */
-    private function isValidJson($string)
+    public function isValidJson($string)
     {
         if (is_string($string)) {
             @json_decode($string);
