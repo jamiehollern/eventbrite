@@ -78,13 +78,13 @@ class Eventbrite
     }
 
     /**
-     * Make the call to Eventbrite, either synchronously or asynchonously.
+     * Make the call to Eventbrite, only synchronous calls at present.
      *
      * @param       $http_method
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function call($http_method, $endpoint, $options = [])
@@ -95,22 +95,24 @@ class Eventbrite
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body,
-              $pv);
-            // Send it.
-            if (isset($options['async']) && $options['async']) {
+            $request = new Request($http_method, $endpoint, $headers, $body, $pv);
+            // More work is required to properly support async.
+            /*if (isset($options['async']) && $options['async']) {
                 $response = $this->client->sendAsync($request, $options);
             } else {
                 $response = $this->client->send($request, $options);
-            }
+            }*/
+            // Send it.
+            $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
                 // Set the last response.
                 $this->last_response = $response;
                 // If the caller wants the raw response, give it to them.
-                if (isset($options['parse_response']) && $options['parse_response']) {
+                if (isset($options['parse_response']) && $options['parse_response'] === false) {
                     return $response;
                 }
-                return $this->parseResponse($response);
+                $parsed_response = $this->parseResponse($response);
+                return $parsed_response;
             } else {
                 // This only really happens when the network is interrupted.
                 throw new BadResponseException('A bad response was received.',
@@ -131,7 +133,10 @@ class Eventbrite
     public function validMethod($http_method)
     {
         $valid_methods = ['get', 'post', 'put', 'patch', 'delete'];
-        return (in_array(strtolower($http_method), $valid_methods));
+        if (in_array(strtolower($http_method), $valid_methods)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -159,7 +164,7 @@ class Eventbrite
      *
      * @return bool
      */
-    private function isValidJson($string)
+    public function isValidJson($string)
     {
         if (is_string($string)) {
             @json_decode($string);
@@ -179,8 +184,11 @@ class Eventbrite
      */
     public function canConnect()
     {
-        $data = $this->call('GET', self::CURRENT_USER_ENDPOINT);
-        return (strpos($data['code'], '2') === 0);
+        $data = $this->get(self::CURRENT_USER_ENDPOINT);
+        if (strpos($data['code'], '2') === 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -189,7 +197,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function get($endpoint, $options = [])
@@ -198,12 +206,26 @@ class Eventbrite
     }
 
     /**
+     * Wrapper shortcut on the call method for "POST" requests.
+     *
+     * @param       $endpoint
+     * @param array $options
+     *
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     */
+    public function post($endpoint, $options = [])
+    {
+        return $this->call('POST', $endpoint, $options);
+    }
+
+    /**
      * Wrapper shortcut on the call method for "PUT" requests.
      *
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function put($endpoint, $options = [])
@@ -217,7 +239,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function patch($endpoint, $options = [])
@@ -231,7 +253,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function delete($endpoint, $options = [])
