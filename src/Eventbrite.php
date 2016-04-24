@@ -193,7 +193,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function get($endpoint, $options = [])
@@ -207,7 +207,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function put($endpoint, $options = [])
@@ -221,7 +221,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function patch($endpoint, $options = [])
@@ -235,7 +235,7 @@ class Eventbrite
      * @param       $endpoint
      * @param array $options
      *
-     * @return array|\GuzzleHttp\Promise\PromiseInterface|mixed|\Psr\Http\Message\ResponseInterface
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
     public function delete($endpoint, $options = [])
