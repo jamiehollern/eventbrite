@@ -95,13 +95,8 @@ class Eventbrite
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body, $pv);
-            // More work is required to properly support async.
-            /*if (isset($options['async']) && $options['async']) {
-                $response = $this->client->sendAsync($request, $options);
-            } else {
-                $response = $this->client->send($request, $options);
-            }*/
+            $request = new Request($http_method, $endpoint, $headers, $body,
+              $pv);
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
