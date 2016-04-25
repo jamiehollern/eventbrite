@@ -266,7 +266,8 @@ class Eventbrite
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getLastResponse() {
+    public function getLastResponse()
+    {
         return $this->last_response;
     }
 
