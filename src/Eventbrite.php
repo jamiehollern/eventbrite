@@ -45,8 +45,6 @@ class Eventbrite
      */
     private $last_response = null;
 
-    private $last_error = null;
-
     /**
      * @param string $token
      *   The OAuth token to authenticate the request
