@@ -16,7 +16,7 @@ use Exception;
  * Class Eventbrite
  *
  * @package EventbritePHP
- * @todo Add a batch method.
+ * @todo    Add a batch method.
  */
 class Eventbrite
 {
@@ -80,9 +80,9 @@ class Eventbrite
     /**
      * Make the call to Eventbrite, only synchronous calls at present.
      *
-     * @param       $http_method
-     * @param       $endpoint
-     * @param array $options
+     * @param       string $http_method
+     * @param              $endpoint
+     * @param array        $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -160,7 +160,7 @@ class Eventbrite
     /**
      * Checks a string to see if it's JSON. True if it is, false if it's not.
      *
-     * @param $string
+     * @param string $string
      *
      * @return bool
      */
@@ -194,8 +194,8 @@ class Eventbrite
     /**
      * Wrapper shortcut on the call method for "GET" requests.
      *
-     * @param       $endpoint
-     * @param array $options
+     * @param       string $endpoint
+     * @param array        $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
