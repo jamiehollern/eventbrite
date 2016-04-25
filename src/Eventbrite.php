@@ -59,10 +59,10 @@ class Eventbrite
           'base_uri' => 'https://www.eventbriteapi.com/v3/',
           'headers' => [
             'User-Agent' => 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent(),
-            'timeout' => 30,
           ],
           // Turn exceptions off so we can handle the responses ourselves.
           'exceptions' => false,
+          'timeout' => 30,
         ];
         $config = array_merge($config, $default_config);
         if (!empty($token)) {
