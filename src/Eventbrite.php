@@ -57,14 +57,13 @@ class Eventbrite
     {
         $default_config = [
           'base_uri' => 'https://www.eventbriteapi.com/v3/',
-          'headers' => [
-            'User-Agent' => 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent(),
-          ],
           // Turn exceptions off so we can handle the responses ourselves.
           'exceptions' => false,
           'timeout' => 30,
         ];
         $config = array_merge($config, $default_config);
+        // Add this last so it's always there and isn't overwritten.
+        $config['headers']['User-Agent'] = 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent();
         if (!empty($token)) {
             $this->token = $token;
             // Set the authorisation header.
