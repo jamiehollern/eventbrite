@@ -16,7 +16,7 @@ use Exception;
  * Class Eventbrite
  *
  * @package EventbritePHP
- * @todo Add a batch method.
+ * @todo    Add a batch method.
  */
 class Eventbrite
 {
@@ -45,8 +45,6 @@ class Eventbrite
      */
     private $last_response = null;
 
-    private $last_error = null;
-
     /**
      * @param string $token
      *   The OAuth token to authenticate the request
@@ -59,14 +57,13 @@ class Eventbrite
     {
         $default_config = [
           'base_uri' => 'https://www.eventbriteapi.com/v3/',
-          'headers' => [
-            'User-Agent' => 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent(),
-            'timeout' => 30,
-          ],
           // Turn exceptions off so we can handle the responses ourselves.
           'exceptions' => false,
+          'timeout' => 30,
         ];
         $config = array_merge($config, $default_config);
+        // Add this last so it's always there and isn't overwritten.
+        $config['headers']['User-Agent'] = 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent();
         if (!empty($token)) {
             $this->token = $token;
             // Set the authorisation header.
@@ -80,9 +77,9 @@ class Eventbrite
     /**
      * Make the call to Eventbrite, only synchronous calls at present.
      *
-     * @param       $http_method
-     * @param       $endpoint
-     * @param array $options
+     * @param       string $http_method
+     * @param              $endpoint
+     * @param array        $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -95,13 +92,8 @@ class Eventbrite
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body, $pv);
-            // More work is required to properly support async.
-            /*if (isset($options['async']) && $options['async']) {
-                $response = $this->client->sendAsync($request, $options);
-            } else {
-                $response = $this->client->send($request, $options);
-            }*/
+            $request = new Request($http_method, $endpoint, $headers, $body,
+              $pv);
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -160,14 +152,14 @@ class Eventbrite
     /**
      * Checks a string to see if it's JSON. True if it is, false if it's not.
      *
-     * @param $string
+     * @param string $string
      *
      * @return bool
      */
     public function isValidJson($string)
     {
         if (is_string($string)) {
-            @json_decode($string);
+            json_decode($string);
             return (json_last_error() === JSON_ERROR_NONE);
         }
         return false;
@@ -194,8 +186,8 @@ class Eventbrite
     /**
      * Wrapper shortcut on the call method for "GET" requests.
      *
-     * @param       $endpoint
-     * @param array $options
+     * @param       string $endpoint
+     * @param array        $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -266,7 +258,8 @@ class Eventbrite
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getLastResponse() {
+    public function getLastResponse()
+    {
         return $this->last_response;
     }
 

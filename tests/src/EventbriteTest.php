@@ -24,7 +24,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \jamiehollern\eventbrite\Eventbrite
      */
-    public $eventbrite;
+    private $eventbrite;
 
     public function setUp()
     {
@@ -191,21 +191,25 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a connect exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::delete
+     * @covers jamiehollern\eventbrite\Eventbrite::get
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
-     * @covers jamiehollern\eventbrite\Eventbrite::parseResponse
-     * @covers jamiehollern\eventbrite\Eventbrite::isValidJson
      */
     public function testNetworkError()
     {
+        // This should throw a BadResponseException.
         $this->setExpectedException('\GuzzleHttp\Exception\BadResponseException');
+        // Mock the Guzzle client.
         $mock = Mockery::mock('GuzzleHttp\Client');
+        // Instantiate the class.
         $eventbrite = new Eventbrite('valid_token');
+        // Use reflection to change the private property "client" to the mock.
         $reflection = new \ReflectionProperty(get_class($eventbrite), 'client');
         $reflection->setAccessible(true);
         $reflection->setValue($eventbrite, $mock);
+        // Mock the $client->send method and return null.
         $mock->shouldReceive('send');
+        // Call the method.
         $call = $eventbrite->get('endpoint');
     }
 
