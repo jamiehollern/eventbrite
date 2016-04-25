@@ -56,13 +56,13 @@ class Eventbrite
     public function __construct($token, $config = [])
     {
         $default_config = [
-          'base_uri' => 'https://www.eventbriteapi.com/v3/',
-          'headers' => [
+            'base_uri' => 'https://www.eventbriteapi.com/v3/',
+            'headers' => [
             'User-Agent' => 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent(),
             'timeout' => 30,
-          ],
-          // Turn exceptions off so we can handle the responses ourselves.
-          'exceptions' => false,
+            ],
+            // Turn exceptions off so we can handle the responses ourselves.
+            'exceptions' => false,
         ];
         $config = array_merge($config, $default_config);
         if (!empty($token)) {
@@ -94,7 +94,7 @@ class Eventbrite
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
             $request = new Request($http_method, $endpoint, $headers, $body,
-              $pv);
+                $pv);
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -109,7 +109,7 @@ class Eventbrite
             } else {
                 // This only really happens when the network is interrupted.
                 throw new BadResponseException('A bad response was received.',
-                  $request);
+                    $request);
             }
         } else {
             throw new \Exception('Unrecognised HTTP verb.');
@@ -143,9 +143,9 @@ class Eventbrite
     {
         $body = $response->getBody()->getContents();
         return [
-          'code' => $response->getStatusCode(),
-          'headers' => $response->getHeaders(),
-          'body' => ($this->isValidJson($body)) ? json_decode($body,
+            'code' => $response->getStatusCode(),
+            'headers' => $response->getHeaders(),
+            'body' => ($this->isValidJson($body)) ? json_decode($body,
             true) : $body,
         ];
     }
