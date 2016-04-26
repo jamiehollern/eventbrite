@@ -4,6 +4,7 @@ A lightweight PHP wrapper for the [Eventbrite API v3](https://www.eventbrite.co.
 [![Build Status](https://travis-ci.org/jamiehollern/eventbrite.svg?branch=master)](https://travis-ci.org/jamiehollern/eventbrite)
 [![Coverage Status](https://coveralls.io/repos/jamiehollern/eventbrite/badge.svg?branch=master&service=github)](https://coveralls.io/github/jamiehollern/eventbrite?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jamiehollern/eventbrite/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jamiehollern/eventbrite/?branch=master)
+[![Packagist](https://img.shields.io/packagist/dt/jamiehollern/eventbrite.svg?maxAge=2592000)](https://packagist.org/packages/jamiehollern/eventbrite)
 
 # Requirements
 * PHP >= 5.5
