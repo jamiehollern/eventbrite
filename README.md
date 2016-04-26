@@ -40,17 +40,25 @@ You can find out more about the Eventbrite authentication process on the [Eventb
 ### Basic usage
 To get started, you only need an OAuth token to pass into the Eventbrite class:
 
-```
+```php
+<?php
+
 use jamiehollern/eventbrite/Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+?>
 ```
 
 You can check that everything's working okay by running:
 
-```
+```php
+<?php
+
 // Returns true if you can connect.
 $can_connect = $eventbrite->canConnect();
+
+?>
 ```
 
 ### Advanced options
@@ -58,19 +66,27 @@ You can take advantage of the fact that this library is a fairly light wrapper a
 
 To increase the timeout limit from the default 30 seconds to 60 seconds:
 
-```
+```php
+<?php
+
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['timeout' => 60]);
+
+?>
 ```
 
 If you don't have cURL installed, you can add a different HTTP request handler when instantiating the class. See the [Guzzle docs](http://docs.guzzlephp.org/en/latest/handlers-and-middleware.html) for more information.
 
-```
+```php
+<?php
+
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\StreamHandler;
 
 $handler = new StreamHandler();
 $stack = HandlerStack::create($handler);
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['handler' => $stack]);
+
+?>
 ```
 
 ## Making requests
