@@ -55,6 +55,9 @@ You can check that everything's working okay by running:
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 // Returns true if you can connect.
 $can_connect = $eventbrite->canConnect();
 
@@ -69,6 +72,8 @@ To increase the timeout limit from the default 30 seconds to 60 seconds:
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
+
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['timeout' => 60]);
 
 ?>
@@ -79,6 +84,7 @@ If you don't have cURL installed, you can add a different HTTP request handler w
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\StreamHandler;
 
