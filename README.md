@@ -4,6 +4,7 @@ A lightweight PHP wrapper for the [Eventbrite API v3](https://www.eventbrite.co.
 [![Build Status](https://travis-ci.org/jamiehollern/eventbrite.svg?branch=master)](https://travis-ci.org/jamiehollern/eventbrite)
 [![Coverage Status](https://coveralls.io/repos/jamiehollern/eventbrite/badge.svg?branch=master&service=github)](https://coveralls.io/github/jamiehollern/eventbrite?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jamiehollern/eventbrite/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jamiehollern/eventbrite/?branch=master)
+[![Packagist](https://img.shields.io/packagist/dt/jamiehollern/eventbrite.svg?maxAge=2592000)](https://packagist.org/packages/jamiehollern/eventbrite)
 
 # Requirements
 * PHP >= 5.5
@@ -55,6 +56,9 @@ You can check that everything's working okay by running:
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 // Returns true if you can connect.
 $can_connect = $eventbrite->canConnect();
 
@@ -69,6 +73,8 @@ To increase the timeout limit from the default 30 seconds to 60 seconds:
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
+
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['timeout' => 60]);
 
 ?>
@@ -79,6 +85,7 @@ If you don't have cURL installed, you can add a different HTTP request handler w
 ```php
 <?php
 
+use jamiehollern/eventbrite/Eventbrite;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\StreamHandler;
 
