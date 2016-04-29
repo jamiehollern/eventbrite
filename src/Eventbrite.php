@@ -17,6 +17,7 @@ use Exception;
  *
  * @package EventbritePHP
  * @todo    Add a batch method.
+ * @todo    Allow the token to be passed as a query string.
  */
 class Eventbrite
 {
@@ -77,23 +78,22 @@ class Eventbrite
     /**
      * Make the call to Eventbrite, only synchronous calls at present.
      *
-     * @param       string $http_method
-     * @param              $endpoint
-     * @param array        $options
+     * @param string $verb
+     * @param string $endpoint
+     * @param array  $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function call($http_method, $endpoint, $options = [])
+    public function call($verb, $endpoint, $options = [])
     {
-        if ($this->validMethod($http_method)) {
+        if ($this->validMethod($verb)) {
             // Get the headers and body from the options.
             $headers = isset($options['headers']) ? $options['headers'] : [];
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body,
-              $pv);
+            $request = new Request($verb, $endpoint, $headers, $body, $pv);
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -113,6 +113,46 @@ class Eventbrite
         } else {
             throw new \Exception('Unrecognised HTTP verb.');
         }
+    }
+
+    /**
+     * A slightly abstracted wrapper around call().
+     *
+     * This essentially splits the call options array into different parameters
+     * to make it more obvious to less advanced users what parameters can be
+     * passed to the client.
+     *
+     * @param       $verb
+     * @param       $endpoint
+     * @param null  $params
+     * @param null  $body
+     * @param null  $headers
+     * @param array $options
+     *
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     */
+    public function makeRequest($verb, $endpoint, $params = null, $body = null, $headers = null, $options = [])
+    {
+        // Merge the query string.
+        if ($params !== null) {
+            if (!isset($options['query'])) {
+                $options['query'] = [];
+            }
+            $options['query'] = array_merge($options['query'], $params);
+        }
+        // We can only have one body, so overwrite it if it exists.
+        if ($body !== null) {
+            $options['body'] = $body;
+        }
+        // Merge the headers.
+        if ($headers !== null) {
+            if (!isset($options['headers'])) {
+                $options['headers'] = [];
+            }
+            $options['headers'] = array_merge($options['headers'], $headers);
+        }
+        return $this->call($verb, $endpoint, $options);
     }
 
     /**
@@ -184,7 +224,7 @@ class Eventbrite
     }
 
     /**
-     * Wrapper shortcut on the call method for "GET" requests.
+     * Wrapper shortcut on the makeRequest method for "GET" requests.
      *
      * @param       string $endpoint
      * @param array        $options
@@ -192,13 +232,13 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function get($endpoint, $options = [])
+    public function get($endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        return $this->call('GET', $endpoint, $options);
+        return $this->makeRequest('GET', $endpoint, $params, $body, $headers, $options);
     }
 
     /**
-     * Wrapper shortcut on the call method for "POST" requests.
+     * Wrapper shortcut on the makeRequest method for "POST" requests.
      *
      * @param       $endpoint
      * @param array $options
@@ -206,13 +246,14 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function post($endpoint, $options = [])
+    public function post($endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        return $this->call('POST', $endpoint, $options);
+        return $this->makeRequest('POST', $endpoint, $params, $body, $headers,
+          $options);
     }
 
     /**
-     * Wrapper shortcut on the call method for "PUT" requests.
+     * Wrapper shortcut on the makeRequest method for "PUT" requests.
      *
      * @param       $endpoint
      * @param array $options
@@ -220,13 +261,13 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function put($endpoint, $options = [])
+    public function put($endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        return $this->call('PUT', $endpoint, $options);
+        return $this->makeRequest('PUT', $endpoint, $params, $body, $headers, $options);
     }
 
     /**
-     * Wrapper shortcut on the call method for "PATCH" requests.
+     * Wrapper shortcut on the makeRequest method for "PATCH" requests.
      *
      * @param       $endpoint
      * @param array $options
@@ -234,13 +275,13 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function patch($endpoint, $options = [])
+    public function patch($endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        return $this->call('PATCH', $endpoint, $options);
+        return $this->makeRequest('PATCH', $endpoint, $params, $body, $headers, $options);
     }
 
     /**
-     * Wrapper shortcut on the call method for "DELETE" requests.
+     * Wrapper shortcut on the makeRequest method for "DELETE" requests.
      *
      * @param       $endpoint
      * @param array $options
@@ -248,9 +289,9 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function delete($endpoint, $options = [])
+    public function delete($endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        return $this->call('DELETE', $endpoint, $options);
+        return $this->makeRequest('DELETE', $endpoint, $params, $body, $headers, $options);
     }
 
     /**
