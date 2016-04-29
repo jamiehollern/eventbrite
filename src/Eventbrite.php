@@ -134,24 +134,24 @@ class Eventbrite
      */
     public function makeRequest($verb, $endpoint, $params = null, $body = null, $headers = null, $options = [])
     {
-        // Merge the query string.
-        if ($params !== null) {
-            if (!isset($options['query'])) {
-                $options['query'] = [];
-            }
-            $options['query'] = array_merge($options['query'], $params);
-        }
         // We can only have one body, so overwrite it if it exists.
         if ($body !== null) {
             $options['body'] = $body;
         }
-        // Merge the headers.
-        if ($headers !== null) {
-            if (!isset($options['headers'])) {
-                $options['headers'] = [];
+        // Merge the mergeable arrays if necessary.
+        $mergeable = [
+          'query' => $params,
+          'headers' => $headers,
+        ];
+        foreach ($mergeable as $key => $value) {
+            if ($value !== null) {
+                if (!isset($options[$key])) {
+                    $options[$key] = [];
+                }
+                $options[$key] = array_merge($options[$key], $value);
             }
-            $options['headers'] = array_merge($options['headers'], $headers);
         }
+        // Make the call.
         return $this->call($verb, $endpoint, $options);
     }
 
@@ -232,9 +232,15 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function get($endpoint, $params = null, $body = null, $headers = null, $options = [])
-    {
-        return $this->makeRequest('GET', $endpoint, $params, $body, $headers, $options);
+    public function get(
+      $endpoint,
+      $params = null,
+      $body = null,
+      $headers = null,
+      $options = []
+    ) {
+        return $this->makeRequest('GET', $endpoint, $params, $body, $headers,
+          $options);
     }
 
     /**
@@ -246,8 +252,13 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function post($endpoint, $params = null, $body = null, $headers = null, $options = [])
-    {
+    public function post(
+      $endpoint,
+      $params = null,
+      $body = null,
+      $headers = null,
+      $options = []
+    ) {
         return $this->makeRequest('POST', $endpoint, $params, $body, $headers,
           $options);
     }
@@ -261,9 +272,15 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function put($endpoint, $params = null, $body = null, $headers = null, $options = [])
-    {
-        return $this->makeRequest('PUT', $endpoint, $params, $body, $headers, $options);
+    public function put(
+      $endpoint,
+      $params = null,
+      $body = null,
+      $headers = null,
+      $options = []
+    ) {
+        return $this->makeRequest('PUT', $endpoint, $params, $body, $headers,
+          $options);
     }
 
     /**
@@ -275,9 +292,15 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function patch($endpoint, $params = null, $body = null, $headers = null, $options = [])
-    {
-        return $this->makeRequest('PATCH', $endpoint, $params, $body, $headers, $options);
+    public function patch(
+      $endpoint,
+      $params = null,
+      $body = null,
+      $headers = null,
+      $options = []
+    ) {
+        return $this->makeRequest('PATCH', $endpoint, $params, $body, $headers,
+          $options);
     }
 
     /**
@@ -289,9 +312,15 @@ class Eventbrite
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function delete($endpoint, $params = null, $body = null, $headers = null, $options = [])
-    {
-        return $this->makeRequest('DELETE', $endpoint, $params, $body, $headers, $options);
+    public function delete(
+      $endpoint,
+      $params = null,
+      $body = null,
+      $headers = null,
+      $options = []
+    ) {
+        return $this->makeRequest('DELETE', $endpoint, $params, $body, $headers,
+          $options);
     }
 
     /**
