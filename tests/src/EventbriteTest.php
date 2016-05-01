@@ -18,6 +18,7 @@ use Mockery;
  * Class EventbriteTest
  *
  * @package jamiehollern\eventbrite\Tests
+ * @todo    Write some more in depth tests to cover code paths better.
  */
 class EventbriteTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,22 +53,48 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
-    public function testCallBadVerb()
+    public function testMakeRequestBadVerb()
     {
         $this->setExpectedException('\Exception');
         $eventbrite = new Eventbrite('valid_token');
-        $call = $eventbrite->call('PUNT', 'endpoint');
+        $call = $eventbrite->makeRequest('PUNT', 'endpoint');
         $this->assertInstanceOf('jamiehollern\eventbrite\Eventbrite',
           $eventbrite);
     }
 
     /**
+     * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
+     * @covers jamiehollern\eventbrite\Eventbrite::validMethod
+     */
+    public function testMakeRequestWithParams()
+    {
+        // Create a mock and queue a response.
+        $mock = new MockHandler([
+          new Response(200, ['Content-Type' => 'application/json'],
+            '{ "test": "json" }'),
+        ]);
+        $handler = HandlerStack::create($mock);
+        // Inject the mock handler into the config when instantiating.
+        $eventbrite = new Eventbrite('valid_token', ['handler' => $handler]);
+        $call = $eventbrite->get('endpoint', ['params' => ['expand' => 'organizer,venue']], '{"body"}', ['Content-Type' => 'application/json']);
+        $expected = [
+          'code' => 200,
+          'headers' => ['Content-Type' => ['application/json']],
+          'body' => ['test' => 'json'],
+        ];
+        $this->assertEquals($expected, $call);
+    }
+
+    /**
      * Generic test of call().
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      * @covers jamiehollern\eventbrite\Eventbrite::parseResponse
      * @covers jamiehollern\eventbrite\Eventbrite::isValidJson
@@ -94,8 +121,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns non-JSON.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::post
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      * @covers jamiehollern\eventbrite\Eventbrite::parseResponse
      * @covers jamiehollern\eventbrite\Eventbrite::isValidJson
@@ -121,8 +149,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a request exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::put
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testPut()
@@ -142,8 +171,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns an unparsed response.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::patch
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testPatch()
@@ -156,15 +186,16 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
         $handler = HandlerStack::create($mock);
         // Inject the mock handler into the config when instantiating.
         $eventbrite = new Eventbrite('valid_token', ['handler' => $handler]);
-        $call = $eventbrite->patch('endpoint', ['parse_response' => false]);
+        $call = $eventbrite->patch('endpoint', null, null, null, ['parse_response' => false]);
         $this->assertInstanceOf('\GuzzleHttp\Psr7\Response', $call);
     }
 
     /**
      * Throws a connect exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::delete
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      * @covers jamiehollern\eventbrite\Eventbrite::parseResponse
      * @covers jamiehollern\eventbrite\Eventbrite::isValidJson
@@ -191,8 +222,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a connect exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testNetworkError()
@@ -214,11 +246,30 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Throws a connect exception.
+     *
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
+     * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
+     * @covers jamiehollern\eventbrite\Eventbrite::validMethod
+     */
+    public function testUndefinedMethod()
+    {
+        // This should throw a BadResponseException.
+        $this->setExpectedException('\BadMethodCallException');
+        // Instantiate the class.
+        $eventbrite = new Eventbrite('valid_token');
+        // Call the method.
+        $method = $eventbrite->undefinedMethod();
+    }
+
+    /**
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::getLastResponse
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testGetLastResponse()
@@ -240,8 +291,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::canConnect
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testCanConnectTrue()
@@ -262,8 +314,9 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::canConnect
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
      */
     public function testCanConnectFalse()

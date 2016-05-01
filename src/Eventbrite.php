@@ -17,6 +17,7 @@ use Exception;
  *
  * @package EventbritePHP
  * @todo    Add a batch method.
+ * @todo    Allow the token to be passed as a query string.
  */
 class Eventbrite
 {
@@ -24,6 +25,11 @@ class Eventbrite
      * The current version of this library.
      */
     const VERSION = '0.1';
+
+    /**
+     * An array of valid HTTP verbs.
+     */
+    CONST VALID_VERBS = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
      * The API endpoint to get the current user's details.
@@ -77,23 +83,22 @@ class Eventbrite
     /**
      * Make the call to Eventbrite, only synchronous calls at present.
      *
-     * @param       string $http_method
-     * @param              $endpoint
-     * @param array        $options
+     * @param string $verb
+     * @param string $endpoint
+     * @param array  $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function call($http_method, $endpoint, $options = [])
+    public function call($verb, $endpoint, $options = [])
     {
-        if ($this->validMethod($http_method)) {
+        if ($this->validMethod($verb)) {
             // Get the headers and body from the options.
             $headers = isset($options['headers']) ? $options['headers'] : [];
             $body = isset($options['body']) ? $options['body'] : [];
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
-            $request = new Request($http_method, $endpoint, $headers, $body,
-              $pv);
+            $request = new Request($verb, $endpoint, $headers, $body, $pv);
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -116,6 +121,46 @@ class Eventbrite
     }
 
     /**
+     * A slightly abstracted wrapper around call().
+     *
+     * This essentially splits the call options array into different parameters
+     * to make it more obvious to less advanced users what parameters can be
+     * passed to the client.
+     *
+     * @param       $verb
+     * @param       $endpoint
+     * @param null  $params
+     * @param null  $body
+     * @param null  $headers
+     * @param array $options
+     *
+     * @return array|mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     */
+    public function makeRequest($verb, $endpoint, $params = null, $body = null, $headers = null, $options = [])
+    {
+        // We can only have one body, so overwrite it if it exists.
+        if ($body !== null) {
+            $options['body'] = $body;
+        }
+        // Merge the mergeable arrays if necessary.
+        $mergeable = [
+          'query' => $params,
+          'headers' => $headers,
+        ];
+        foreach ($mergeable as $key => $value) {
+            if ($value !== null) {
+                if (!isset($options[$key])) {
+                    $options[$key] = [];
+                }
+                $options[$key] = array_merge($options[$key], $value);
+            }
+        }
+        // Make the call.
+        return $this->call($verb, $endpoint, $options);
+    }
+
+    /**
      * Checks if the HTTP method being used is correct.
      *
      * @param $http_method
@@ -124,8 +169,7 @@ class Eventbrite
      */
     public function validMethod($http_method)
     {
-        $valid_methods = ['get', 'post', 'put', 'patch', 'delete'];
-        if (in_array(strtolower($http_method), $valid_methods)) {
+        if (in_array(strtolower($http_method), self::VALID_VERBS)) {
             return true;
         }
         return false;
@@ -184,73 +228,24 @@ class Eventbrite
     }
 
     /**
-     * Wrapper shortcut on the call method for "GET" requests.
+     * Provides shortcut methods named by HTTP verbs.
      *
-     * @param       string $endpoint
-     * @param array        $options
+     * Provides shortcut methods for GET, POST, PUT, PATCH and DELETE.
      *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function get($endpoint, $options = [])
-    {
-        return $this->call('GET', $endpoint, $options);
-    }
-
-    /**
-     * Wrapper shortcut on the call method for "POST" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
+     * @param string $method
+     * @param array  $args
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function post($endpoint, $options = [])
-    {
-        return $this->call('POST', $endpoint, $options);
-    }
-
-    /**
-     * Wrapper shortcut on the call method for "PUT" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function put($endpoint, $options = [])
-    {
-        return $this->call('PUT', $endpoint, $options);
-    }
-
-    /**
-     * Wrapper shortcut on the call method for "PATCH" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function patch($endpoint, $options = [])
-    {
-        return $this->call('PATCH', $endpoint, $options);
-    }
-
-    /**
-     * Wrapper shortcut on the call method for "DELETE" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function delete($endpoint, $options = [])
-    {
-        return $this->call('DELETE', $endpoint, $options);
+    public function __call($method, $args) {
+        if ($this->validMethod($method)) {
+            array_unshift($args, $method);
+            return call_user_func_array(array($this, 'makeRequest'), $args);
+        }
+        else {
+            throw new \BadMethodCallException('Method not found in class.');
+        }
     }
 
     /**
