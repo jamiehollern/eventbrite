@@ -246,6 +246,24 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Throws a connect exception.
+     *
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
+     * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
+     * @covers jamiehollern\eventbrite\Eventbrite::validMethod
+     */
+    public function testUndefinedMethod()
+    {
+        // This should throw a BadResponseException.
+        $this->setExpectedException('\BadMethodCallException');
+        // Instantiate the class.
+        $eventbrite = new Eventbrite('valid_token');
+        // Call the method.
+        $method = $eventbrite->undefinedMethod();
+    }
+
+    /**
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::getLastResponse
