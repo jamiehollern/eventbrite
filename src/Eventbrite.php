@@ -29,7 +29,7 @@ class Eventbrite
     /**
      * An array of valid HTTP verbs.
      */
-    CONST VALID_VERBS = ['get', 'post', 'put', 'patch', 'delete'];
+    static $valid_verbs = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
      * The API endpoint to get the current user's details.
@@ -169,7 +169,7 @@ class Eventbrite
      */
     public function validMethod($http_method)
     {
-        if (in_array(strtolower($http_method), self::VALID_VERBS)) {
+        if (in_array(strtolower($http_method), self::$valid_verbs)) {
             return true;
         }
         return false;
