@@ -27,6 +27,11 @@ class Eventbrite
     const VERSION = '0.1';
 
     /**
+     * An array of valid HTTP verbs.
+     */
+    CONST VALID_VERBS = ['get', 'post', 'put', 'patch', 'delete'];
+
+    /**
      * The API endpoint to get the current user's details.
      */
     const CURRENT_USER_ENDPOINT = 'users/me/';
@@ -164,8 +169,7 @@ class Eventbrite
      */
     public function validMethod($http_method)
     {
-        $valid_methods = ['get', 'post', 'put', 'patch', 'delete'];
-        if (in_array(strtolower($http_method), $valid_methods)) {
+        if (in_array(strtolower($http_method), self::VALID_VERBS)) {
             return true;
         }
         return false;
