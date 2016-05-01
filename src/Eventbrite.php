@@ -228,103 +228,21 @@ class Eventbrite
     }
 
     /**
-     * Wrapper shortcut on the makeRequest method for "GET" requests.
+     * Provides shortcut methods named by HTTP verbs.
      *
-     * @param       string $endpoint
-     * @param array        $options
+     * Provides shortcut methods for GET, POST, PUT, PATCH and DELETE.
      *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function get(
-      $endpoint,
-      $params = null,
-      $body = null,
-      $headers = null,
-      $options = []
-    ) {
-        return $this->makeRequest('GET', $endpoint, $params, $body, $headers,
-          $options);
-    }
-
-    /**
-     * Wrapper shortcut on the makeRequest method for "POST" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
+     * @param string $method
+     * @param array  $args
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
      */
-    public function post(
-      $endpoint,
-      $params = null,
-      $body = null,
-      $headers = null,
-      $options = []
-    ) {
-        return $this->makeRequest('POST', $endpoint, $params, $body, $headers,
-          $options);
-    }
-
-    /**
-     * Wrapper shortcut on the makeRequest method for "PUT" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function put(
-      $endpoint,
-      $params = null,
-      $body = null,
-      $headers = null,
-      $options = []
-    ) {
-        return $this->makeRequest('PUT', $endpoint, $params, $body, $headers,
-          $options);
-    }
-
-    /**
-     * Wrapper shortcut on the makeRequest method for "PATCH" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function patch(
-      $endpoint,
-      $params = null,
-      $body = null,
-      $headers = null,
-      $options = []
-    ) {
-        return $this->makeRequest('PATCH', $endpoint, $params, $body, $headers,
-          $options);
-    }
-
-    /**
-     * Wrapper shortcut on the makeRequest method for "DELETE" requests.
-     *
-     * @param       $endpoint
-     * @param array $options
-     *
-     * @return array|mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Exception
-     */
-    public function delete(
-      $endpoint,
-      $params = null,
-      $body = null,
-      $headers = null,
-      $options = []
-    ) {
-        return $this->makeRequest('DELETE', $endpoint, $params, $body, $headers,
-          $options);
+    public function __call($method, $args) {
+        if ($this->validMethod($method)) {
+            array_unshift($args, $method);
+            return call_user_func_array(array($this, 'makeRequest'), $args);
+        }
     }
 
     /**
