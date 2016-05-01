@@ -98,10 +98,64 @@ $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['handler' => $stack]);
 
 ## Making requests
 
-Coming soon.
+There are three ways of making requests with the library and all of them roughly amount to the same thing, but with various levels of abstraction:
+
+* `makeRequest`
+* `call`
+* `get/post/put/patch/delete`
 
 
+### The `makeRequest` method
 
+This method is a wrapper around the `call` method and differs only in the parameters it takes. It is designed to be slightly more obvious than `call` in that the parameters explicitly outline what to do with the method.
 
+```
+<?php
 
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+$eventbrite->makeRequest('GET', 'users/me/orders/', ['expand' => 'event.venue']);
+
+?>
+```
+
+### The shortcut methods
+The shortcut methods are simply methods named for the HTTP verbs and are identical to the `makeRequest` method but for the fact that the first parameter of `makeRequest` is the actual name of the shortcut method.
+
+```
+<?php
+
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+$events = $eventbrite->get('users/me/orders/', ['expand' => 'event.venue']);
+
+?>
+```
+### The `call` method
+
+The `call` method is the most lightweight wrapper around the Guzzle client and takes three parameters; the HTTP verb (i.e. GET, POST etc), the endpoint and an optional array config for the request that maps directly to the [Guzzle request options](http://docs.guzzlephp.org/en/latest/request-options.html). 
+
+```
+<?php
+
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+$eventbrite->call('GET', 'users/me/orders/', ['query' => ['expand' => 'event.venue']]);
+
+?>
+```
+
+## FAQ
+* __My calls aren't working and don't seem to be calling the correct endpoint. What's wrong?__ Make sure you don't put a slash `/` in front of your endpoint or you'll confuse Guzzle.
+* __Is there more in depth documentation available?__ Not yet but as I develop the library I plan to write extensive documentation.
+* __What is the roadmap for this library?__ Initially it will serve to be a lightweight abstraction around Guzzle focused on RESTful requests to the Eventbrite API but eventually the plan is to include data objects and heavier abstraction on a per endpoint basis for users who don't want to put too much effort into using the API manually. This will allow for both beginners and advanced users to find something valuable in the library.
 
