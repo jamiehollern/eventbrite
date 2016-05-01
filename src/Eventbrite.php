@@ -243,6 +243,9 @@ class Eventbrite
             array_unshift($args, $method);
             return call_user_func_array(array($this, 'makeRequest'), $args);
         }
+        else {
+            throw new \BadMethodCallException('Method not found in class.');
+        }
     }
 
     /**

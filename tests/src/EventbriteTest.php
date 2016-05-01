@@ -92,7 +92,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Generic test of call().
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -121,7 +121,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns non-JSON.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::post
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -149,7 +149,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a request exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::put
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -171,7 +171,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns an unparsed response.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::patch
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -193,7 +193,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a connect exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::delete
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -222,7 +222,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Throws a connect exception.
      *
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -249,7 +249,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::getLastResponse
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -273,7 +273,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::canConnect
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
@@ -296,7 +296,7 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
      * Returns an unparsed response.
      *
      * @covers jamiehollern\eventbrite\Eventbrite::canConnect
-     * @covers jamiehollern\eventbrite\Eventbrite::get
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
      * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
      * @covers jamiehollern\eventbrite\Eventbrite::validMethod
