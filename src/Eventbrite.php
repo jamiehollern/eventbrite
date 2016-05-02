@@ -47,6 +47,11 @@ class Eventbrite
     private $client;
 
     /**
+     * @var \GuzzleHttp\Psr7\Request
+     */
+    private $last_request = null;
+
+    /**
      * @var \Psr\Http\Message\ResponseInterface
      */
     private $last_response = null;
@@ -99,6 +104,8 @@ class Eventbrite
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
             $request = new Request($verb, $endpoint, $headers, $body, $pv);
+            // Save the request as the last request.
+            $this->last_request = $request;
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -246,6 +253,16 @@ class Eventbrite
         else {
             throw new \BadMethodCallException('Method not found in class.');
         }
+    }
+
+    /**
+     * Returns the last request object for inspection.
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getLastRequest()
+    {
+        return $this->last_request;
     }
 
     /**
