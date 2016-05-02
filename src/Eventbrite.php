@@ -29,7 +29,7 @@ class Eventbrite
     /**
      * An array of valid HTTP verbs.
      */
-    static $valid_verbs = ['get', 'post', 'put', 'patch', 'delete'];
+    private static $valid_verbs = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
      * The API endpoint to get the current user's details.
@@ -47,6 +47,11 @@ class Eventbrite
     private $client;
 
     /**
+     * @var \GuzzleHttp\Psr7\Request
+     */
+    private $last_request = null;
+
+    /**
      * @var \Psr\Http\Message\ResponseInterface
      */
     private $last_response = null;
@@ -62,10 +67,10 @@ class Eventbrite
     public function __construct($token, $config = [])
     {
         $default_config = [
-          'base_uri' => 'https://www.eventbriteapi.com/v3/',
-          // Turn exceptions off so we can handle the responses ourselves.
-          'exceptions' => false,
-          'timeout' => 30,
+            'base_uri' => 'https://www.eventbriteapi.com/v3/',
+            // Turn exceptions off so we can handle the responses ourselves.
+            'exceptions' => false,
+            'timeout' => 30,
         ];
         $config = array_merge($config, $default_config);
         // Add this last so it's always there and isn't overwritten.
@@ -99,6 +104,8 @@ class Eventbrite
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
             $request = new Request($verb, $endpoint, $headers, $body, $pv);
+            // Save the request as the last request.
+            $this->last_request = $request;
             // Send it.
             $response = $this->client->send($request, $options);
             if ($response instanceof ResponseInterface) {
@@ -113,7 +120,7 @@ class Eventbrite
             } else {
                 // This only really happens when the network is interrupted.
                 throw new BadResponseException('A bad response was received.',
-                  $request);
+                    $request);
             }
         } else {
             throw new \Exception('Unrecognised HTTP verb.');
@@ -127,12 +134,12 @@ class Eventbrite
      * to make it more obvious to less advanced users what parameters can be
      * passed to the client.
      *
-     * @param       $verb
-     * @param       $endpoint
-     * @param null  $params
-     * @param null  $body
-     * @param null  $headers
-     * @param array $options
+     * @param string $verb
+     * @param string $endpoint
+     * @param null   $params
+     * @param null   $body
+     * @param null   $headers
+     * @param array  $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -145,8 +152,8 @@ class Eventbrite
         }
         // Merge the mergeable arrays if necessary.
         $mergeable = [
-          'query' => $params,
-          'headers' => $headers,
+            'query' => $params,
+            'headers' => $headers,
         ];
         foreach ($mergeable as $key => $value) {
             if ($value !== null) {
@@ -163,7 +170,7 @@ class Eventbrite
     /**
      * Checks if the HTTP method being used is correct.
      *
-     * @param $http_method
+     * @param string $http_method
      *
      * @return bool
      */
@@ -182,14 +189,14 @@ class Eventbrite
      *
      * @return array
      */
-    private function parseResponse(ResponseInterface $response)
+    public function parseResponse(ResponseInterface $response)
     {
         $body = $response->getBody()->getContents();
         return [
-          'code' => $response->getStatusCode(),
-          'headers' => $response->getHeaders(),
-          'body' => ($this->isValidJson($body)) ? json_decode($body,
-            true) : $body,
+            'code' => $response->getStatusCode(),
+            'headers' => $response->getHeaders(),
+            'body' => ($this->isValidJson($body)) ? json_decode($body,
+                true) : $body,
         ];
     }
 
@@ -242,10 +249,19 @@ class Eventbrite
         if ($this->validMethod($method)) {
             array_unshift($args, $method);
             return call_user_func_array(array($this, 'makeRequest'), $args);
-        }
-        else {
+        } else {
             throw new \BadMethodCallException('Method not found in class.');
         }
+    }
+
+    /**
+     * Returns the last request object for inspection.
+     *
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getLastRequest()
+    {
+        return $this->last_request;
     }
 
     /**
