@@ -67,10 +67,10 @@ class Eventbrite
     public function __construct($token, $config = [])
     {
         $default_config = [
-          'base_uri' => 'https://www.eventbriteapi.com/v3/',
-          // Turn exceptions off so we can handle the responses ourselves.
-          'exceptions' => false,
-          'timeout' => 30,
+            'base_uri' => 'https://www.eventbriteapi.com/v3/',
+            // Turn exceptions off so we can handle the responses ourselves.
+            'exceptions' => false,
+            'timeout' => 30,
         ];
         $config = array_merge($config, $default_config);
         // Add this last so it's always there and isn't overwritten.
@@ -134,12 +134,12 @@ class Eventbrite
      * to make it more obvious to less advanced users what parameters can be
      * passed to the client.
      *
-     * @param       $verb
-     * @param       $endpoint
-     * @param null  $params
-     * @param null  $body
-     * @param null  $headers
-     * @param array $options
+     * @param string $verb
+     * @param string $endpoint
+     * @param null   $params
+     * @param null   $body
+     * @param null   $headers
+     * @param array  $options
      *
      * @return array|mixed|\Psr\Http\Message\ResponseInterface
      * @throws \Exception
@@ -170,7 +170,7 @@ class Eventbrite
     /**
      * Checks if the HTTP method being used is correct.
      *
-     * @param $http_method
+     * @param string $http_method
      *
      * @return bool
      */
@@ -249,8 +249,7 @@ class Eventbrite
         if ($this->validMethod($method)) {
             array_unshift($args, $method);
             return call_user_func_array(array($this, 'makeRequest'), $args);
-        }
-        else {
+        } else {
             throw new \BadMethodCallException('Method not found in class.');
         }
     }
