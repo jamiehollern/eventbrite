@@ -182,7 +182,7 @@ class Eventbrite
      *
      * @return array
      */
-    private function parseResponse(ResponseInterface $response)
+    public function parseResponse(ResponseInterface $response)
     {
         $body = $response->getBody()->getContents();
         return [
