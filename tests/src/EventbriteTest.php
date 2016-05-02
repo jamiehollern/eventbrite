@@ -266,6 +266,30 @@ class EventbriteTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns an unparsed response.
      *
+     * @covers jamiehollern\eventbrite\Eventbrite::getLastRequest
+     * @covers jamiehollern\eventbrite\Eventbrite::__call
+     * @covers jamiehollern\eventbrite\Eventbrite::call
+     * @covers jamiehollern\eventbrite\Eventbrite::makeRequest
+     * @covers jamiehollern\eventbrite\Eventbrite::validMethod
+     */
+    public function testGetLastRequest()
+    {
+        // Create a mock and queue a response.
+        $mock = new MockHandler([
+          new Response(200, ['Content-Type' => 'application/json'],
+            '{ "test": "json" }'),
+        ]);
+        $handler = HandlerStack::create($mock);
+        // Inject the mock handler into the config when instantiating.
+        $eventbrite = new Eventbrite('valid_token', ['handler' => $handler]);
+        $eventbrite->get('endpoint');
+        $request = $eventbrite->getLastRequest();
+        $this->assertInstanceOf('\GuzzleHttp\Psr7\Request', $request);
+    }
+
+    /**
+     * Returns an unparsed response.
+     *
      * @covers jamiehollern\eventbrite\Eventbrite::getLastResponse
      * @covers jamiehollern\eventbrite\Eventbrite::__call
      * @covers jamiehollern\eventbrite\Eventbrite::call
