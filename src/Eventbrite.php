@@ -120,7 +120,7 @@ class Eventbrite
             } else {
                 // This only really happens when the network is interrupted.
                 throw new BadResponseException('A bad response was received.',
-                  $request);
+                    $request);
             }
         } else {
             throw new \Exception('Unrecognised HTTP verb.');
@@ -152,8 +152,8 @@ class Eventbrite
         }
         // Merge the mergeable arrays if necessary.
         $mergeable = [
-          'query' => $params,
-          'headers' => $headers,
+            'query' => $params,
+            'headers' => $headers,
         ];
         foreach ($mergeable as $key => $value) {
             if ($value !== null) {
@@ -193,10 +193,10 @@ class Eventbrite
     {
         $body = $response->getBody()->getContents();
         return [
-          'code' => $response->getStatusCode(),
-          'headers' => $response->getHeaders(),
-          'body' => ($this->isValidJson($body)) ? json_decode($body,
-            true) : $body,
+            'code' => $response->getStatusCode(),
+            'headers' => $response->getHeaders(),
+            'body' => ($this->isValidJson($body)) ? json_decode($body,
+                true) : $body,
         ];
     }
 
