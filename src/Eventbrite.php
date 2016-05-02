@@ -29,7 +29,7 @@ class Eventbrite
     /**
      * An array of valid HTTP verbs.
      */
-    public static $valid_verbs = ['get', 'post', 'put', 'patch', 'delete'];
+    private static $valid_verbs = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
      * The API endpoint to get the current user's details.
