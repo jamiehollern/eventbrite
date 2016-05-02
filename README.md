@@ -111,14 +111,15 @@ Each of the following examples make the same call, using [Eventbrite expansions]
 
 This method is a wrapper around the `call` method and differs only in the parameters it takes. It is designed to be slightly more obvious than `call` in that the parameters explicitly outline what to do with the method.
 
-```
+```php
 <?php
 
 use jamiehollern/eventbrite/Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
-// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+// Get all of the current users' ticket orders and ensure that the event 
+// data and the event venue data are present in full.
 $eventbrite->makeRequest('GET', 'users/me/orders/', ['expand' => 'event.venue']);
 
 ?>
@@ -127,14 +128,15 @@ $eventbrite->makeRequest('GET', 'users/me/orders/', ['expand' => 'event.venue'])
 ### The shortcut methods
 The shortcut methods are simply methods named for the HTTP verbs and are identical to the `makeRequest` method but for the fact that the first parameter of `makeRequest` is the actual name of the shortcut method. The methods available are `get`, `post`, `put`, `patch` and `delete`.
 
-```
+```php
 <?php
 
 use jamiehollern/eventbrite/Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
-// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+// Get all of the current users' ticket orders and ensure that the event 
+// data and the event venue data are present in full.
 $events = $eventbrite->get('users/me/orders/', ['expand' => 'event.venue']);
 
 ?>
@@ -143,15 +145,77 @@ $events = $eventbrite->get('users/me/orders/', ['expand' => 'event.venue']);
 
 The `call` method is the most lightweight wrapper around the Guzzle client and takes three parameters; the HTTP verb (i.e. GET, POST etc), the endpoint and an optional array config for the request that maps directly to the [Guzzle request options](http://docs.guzzlephp.org/en/latest/request-options.html). 
 
-```
+```php
 <?php
 
 use jamiehollern/eventbrite/Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
-// Get all of the current users' ticket orders and ensure that the event data and the event venue data are present in full.
+// Get all of the current users' ticket orders and ensure that the event 
+// data and the event venue data are present in full.
 $eventbrite->call('GET', 'users/me/orders/', ['query' => ['expand' => 'event.venue']]);
+
+?>
+```
+
+## Responses
+Successfull requests made to the API will return an array with the following information:
+
+* Response code
+* Response headers
+* Response body
+
+If the body content sent back is JSON (which is almost always will be with the Eventbrite API) then this will be decoded to a multidimensional array.
+
+The library does this by taking a [Guzzle response object](http://docs.guzzlephp.org/en/latest/quickstart.html#using-responses) and extracting the most pertinent data from it. This is useful enough for most requests but since the library is just a wrapper around Guzzle, if you wish you can request the full Guzzle response object instead by passing a `false` value for the `parse_response` parameter.
+
+```php
+<?php
+
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Make a request but instruct the call to not parse the response
+// and instead return the Guzzle response object.
+$eventbrite->call('GET', 'users/me/orders/', ['parse_response' => false]);
+
+?>
+```
+
+If you'd like the response object but also want the usual array or don't want to modify your requests, the library stores the last request for you.
+
+```php
+<?php
+
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Make a request as normal.
+$eventbrite->call('GET', 'users/me/orders/');
+// Get the response object.
+$last_response = $eventbrite->getLastResponse();
+
+?>
+```
+
+If you need the parsed data again you can parse the last response. Be advised that the `parseResponse` method expects an object that implements the Guzzle `ResponseInterface`, which will always be a Guzzle `response` object in this case.
+
+```php
+<?php
+
+use jamiehollern/eventbrite/Eventbrite;
+
+$eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
+
+// Make a request as normal.
+$eventbrite->call('GET', 'users/me/orders/');
+// Get the response object.
+$last_response = $eventbrite->getLastResponse();
+// Parse the response.
+$parsed_response = $eventbrite->parseResponse($last_response);
 
 ?>
 ```
