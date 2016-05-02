@@ -104,6 +104,8 @@ There are three ways of making requests with the library and all of them roughly
 * `call`
 * `get/post/put/patch/delete`
 
+Each of the following examples make the same call, using [Eventbrite expansions](https://www.eventbrite.co.uk/developer/v3/reference/expansions/).
+
 
 ### The `makeRequest` method
 
@@ -123,7 +125,7 @@ $eventbrite->makeRequest('GET', 'users/me/orders/', ['expand' => 'event.venue'])
 ```
 
 ### The shortcut methods
-The shortcut methods are simply methods named for the HTTP verbs and are identical to the `makeRequest` method but for the fact that the first parameter of `makeRequest` is the actual name of the shortcut method.
+The shortcut methods are simply methods named for the HTTP verbs and are identical to the `makeRequest` method but for the fact that the first parameter of `makeRequest` is the actual name of the shortcut method. The methods available are `get`, `post`, `put`, `patch` and `delete`.
 
 ```
 <?php
