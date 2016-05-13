@@ -72,7 +72,7 @@ class Eventbrite
             'exceptions' => false,
             'timeout' => 30,
         ];
-        $config = array_merge($config, $default_config);
+        $config = array_merge($default_config, $config);
         // Add this last so it's always there and isn't overwritten.
         $config['headers']['User-Agent'] = 'jamiehollern\eventbrite v' . self::VERSION . ' ' . \GuzzleHttp\default_user_agent();
         if (!empty($token)) {
