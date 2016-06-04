@@ -19,8 +19,7 @@ Install via composer.json:
 ```
 {
   "require": {
-    "php": ">=5.5",
-    "jamiehollern/eventbrite": "*"
+    "jamiehollern/eventbrite": "1.0.0"
   }
 }
 ```
