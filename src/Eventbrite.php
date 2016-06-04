@@ -24,7 +24,7 @@ class Eventbrite
     /**
      * The current version of this library.
      */
-    const VERSION = '0.1';
+    const VERSION = '1.0.0';
 
     /**
      * An array of valid HTTP verbs.
