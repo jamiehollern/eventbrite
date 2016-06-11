@@ -21,7 +21,7 @@ Install via composer.json:
 ```
 {
   "require": {
-    "jamiehollern/eventbrite": "1.0.0"
+    "jamiehollern/eventbrite": "1.0.1"
   }
 }
 ```

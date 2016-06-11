@@ -15,16 +15,17 @@ use Exception;
 /**
  * Class Eventbrite
  *
- * @package EventbritePHP
+ * @package jamiehollern\eventbrite
  * @todo    Add a batch method.
  * @todo    Allow the token to be passed as a query string.
+ * @todo    Properly deal with errors/non-200 responses correctly?
  */
 class Eventbrite
 {
     /**
      * The current version of this library.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * An array of valid HTTP verbs.
