@@ -100,7 +100,7 @@ class Eventbrite
         if ($this->validMethod($verb)) {
             // Get the headers and body from the options.
             $headers = isset($options['headers']) ? $options['headers'] : [];
-            $body = isset($options['body']) ? $options['body'] : [];
+            $body = isset($options['body']) ? $options['body'] : null;
             $pv = isset($options['protocol_version']) ? $options['protocol_version'] : '1.1';
             // Make the request.
             $request = new Request($verb, $endpoint, $headers, $body, $pv);
