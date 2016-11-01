@@ -45,7 +45,7 @@ To get started, you only need an OAuth token to pass into the Eventbrite class:
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -57,7 +57,7 @@ You can check that everything's working okay by running:
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 // Returns true if you can connect.
@@ -74,7 +74,7 @@ To increase the timeout limit from the default 30 seconds to 60 seconds:
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN', ['timeout' => 60]);
 
@@ -86,7 +86,7 @@ If you don't have cURL installed, you can add a different HTTP request handler w
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\StreamHandler;
 
@@ -115,7 +115,7 @@ This method is a wrapper around the `call` method and differs only in the parame
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -132,7 +132,7 @@ The shortcut methods are simply methods named for the HTTP verbs and are identic
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -149,7 +149,7 @@ The `call` method is the most lightweight wrapper around the Guzzle client and t
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -174,7 +174,7 @@ The library does this by taking a [Guzzle response object](http://docs.guzzlephp
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -190,7 +190,7 @@ If you'd like the response object but also want the usual array or don't want to
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
@@ -207,7 +207,7 @@ If you need the parsed data again you can parse the last response. Be advised th
 ```php
 <?php
 
-use jamiehollern/eventbrite/Eventbrite;
+use jamiehollern\eventbrite\Eventbrite;
 
 $eventbrite = new Eventbrite('MY_OAUTH_TOKEN');
 
