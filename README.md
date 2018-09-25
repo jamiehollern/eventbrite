@@ -1,4 +1,7 @@
 # Eventbrite PHP
+
+### Deprecated! This project contains bugs and is no longer actively maintained. Use at your own risk.
+
 A lightweight PHP wrapper for the [Eventbrite API v3](https://www.eventbrite.co.uk/developer/v3/ "Eventbrite API developer docs") using Guzzle 6.
 
 [![Build Status](https://travis-ci.org/jamiehollern/eventbrite.svg?branch=master)](https://travis-ci.org/jamiehollern/eventbrite)
